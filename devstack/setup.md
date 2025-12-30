@@ -56,8 +56,8 @@ Since this user will be making many changes to your system, it should have sudo 
 
 ```bash
 echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
-
 sudo su stack
+cd /opt/stack
 ```
 
 ##### Download DevStack
@@ -70,7 +70,7 @@ cd devstack
 
 ##### Configuration (local.conf)
 
-A minimal configuration is used to enable only required services.
+A minimal configuration is used to enable only required services. create a file with `local.conf` name in devstack directory and put this:
 
 ```ini
 [[local|localrc]]
