@@ -3,3 +3,7 @@ terraform.tfstate*
 .terraform.lock.hcl
 *.log
 notifier/configs/config.yaml
+env
+.env
+*/**/.env
+*/**/__pycache__/
