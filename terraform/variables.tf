@@ -22,6 +22,31 @@ variable "disk_size" {
   default     = 25
 }
 
+variable "enable_init_script" {
+  description = "Whether to inject cloud-init to prep DevStack (packages, user, clone)"
+  type        = bool
+  default     = false
+}
+
+variable "auto_run_stack" {
+  description = "Run ./stack.sh automatically during cloud-init (long running). Leave false for manual run."
+  type        = bool
+  default     = false
+}
+
+variable "devstack_password" {
+  description = "Password for ADMIN/DATABASE/RABBIT/SERVICE in local.conf"
+  type        = string
+  default     = "secret"
+  sensitive   = true
+}
+
+variable "devstack_branch" {
+  description = "DevStack git branch to clone"
+  type        = string
+  default     = "master"
+}
+
 variable "arvan_api_key" {
   type        = string
   description = "ArvanCloud API key"
