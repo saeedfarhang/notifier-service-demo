@@ -12,5 +12,11 @@ EVENTS_SENT = Counter(
     ["event_type"],
 )
 
+DROPPED_ROUTING_KEY = Counter(
+    "openstack_notifications_dropped_routing_key_total",
+    "Messages dropped due to unexpected routing key",
+    ["routing_key"],
+)
+
 def start_metrics_server(addr: str, port: int):
     start_http_server(port, addr)
