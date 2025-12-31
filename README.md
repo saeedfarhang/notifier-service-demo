@@ -52,6 +52,8 @@ python -m cmd.notifier.main configs/config.yaml
 
 Adjust `configs/config.yaml` for RabbitMQ URL, routing keys, allowed events, and SMTP settings. Metrics default to `:9000/metrics`.
 
+> for more detail on service refer to [notifier service](./notifier/README.md).
+
 ## Triggering a demo event
 
 - Create or delete a VM in Horizon/CLI to emit `compute.instance.create.end` or `compute.instance.create.error`.
