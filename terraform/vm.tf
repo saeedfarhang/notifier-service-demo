@@ -8,7 +8,7 @@ locals {
 resource "arvan_abrak" "devstack" {
     name = "devstack-lab"
     timeouts {
-        create = "1h30m"
+        create = "30m"
         update = "2h"
         delete = "20m"
         read   = "10m"
@@ -22,8 +22,4 @@ resource "arvan_abrak" "devstack" {
     security_groups = var.security_group_ids
     ssh_key_name = var.ssh_key_name
     init_script = local.devstack_init_script
-}
-
-output "devstack_floating_ip" {
-  value = arvan_abrak.devstack.floating_ip
 }
