@@ -10,13 +10,13 @@ locals {
 	][0]
 }
 
-data "arvan_plans" "plan_list" {
-  region = var.region
-}
+# data "arvan_plans" "plan_list" {
+#   region = var.region
+# }
 
-data "arvan_security_groups" "default_security_groups" {
-  region = var.region
-}
+# data "arvan_security_groups" "default_security_groups" {
+#   region = var.region
+# }
 
 # output "plan_list" {
 #   value = data.arvan_plans.plan_list
