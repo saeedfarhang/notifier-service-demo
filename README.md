@@ -76,6 +76,10 @@ python -m cmd.notifier.main configs/config.yaml
 
 - Watch notifier logs for the event and check your inbox (or observe metrics counters if email disabled).
 
+```bash
+tail -f notifier.log
+```
+
 ## Notes
 
 - Ensure ports for SSH, Horizon, RabbitMQ (if needed), and notifier metrics are allowed.

@@ -3,15 +3,12 @@
 to config Alloy for collecting logs and prometheus data, first we should install it on our machine:
 
 ```bash
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://apt.grafana.com/gpg.key \
-  | sudo gpg --dearmor -o /etc/apt/keyrings/grafana.gpg
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
 
-echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" \
-  | sudo tee /etc/apt/sources.list.d/grafana.list
-
-sudo apt update
-sudo apt install alloy
+sudo apt-get update
+sudo apt-get install alloy
 ```
 
 ### Verify installation
@@ -30,12 +27,27 @@ logging {
   level = "info"
 }
 
+
 prometheus.exporter.unix "host" {}
 
 prometheus.scrape "host" {
-  targets    = prometheus.exporter.unix.host.targets
+  targets = prometheus.exporter.unix.host.targets
+
   forward_to = [prometheus.remote_write.default.receiver]
 }
+
+
+prometheus.scrape "notifier" {
+  targets = [
+    {
+      __address__ = "127.0.0.1:9000",
+      job         = "notifier",
+    },
+  ]
+
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
 
 prometheus.remote_write "default" {
   endpoint {
@@ -43,13 +55,29 @@ prometheus.remote_write "default" {
   }
 }
 
+
 loki.source.file "logs" {
   targets = [
-    {__path__ = "/var/log/syslog"},
-    {__path__ = "/opt/stack/logs/*.log"},
+    {
+      __path__ = "/var/log/syslog",
+      job      = "syslog",
+      host     = "devstack-lab",
+    },
+    {
+      __path__ = "/opt/stack/logs/*.log",
+      job      = "devstack",
+      host     = "devstack-lab",
+    },
+    {
+      __path__ = "/opt/stack/notifier-service-demo/notifier/notifier.log",
+      job      = "notifier",
+      host     = "devstack-lab",
+    },
   ]
+
   forward_to = [loki.write.default.receiver]
 }
+
 
 loki.write "default" {
   endpoint {
