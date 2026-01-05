@@ -1,6 +1,6 @@
 # OpenStack Event Notifier on ArvanCloud IaaS
 
-Minimal demo for the interview challenge: provision a single-node DevStack on ArvanCloud and push OpenStack events (compute lifecycle) to email with metrics exposure.
+demo for the interview challenge: provision a single-node DevStack on ArvanCloud and push OpenStack events (compute lifecycle) to email with metrics exposure.
 
 ## Repo layout
 
@@ -33,8 +33,6 @@ terraform apply \
   -var auto_run_stack=false   # set true to run ./stack.sh during cloud-init (long)
 ```
 
-Outputs include the floating IP (`devstack_floating_ip`).
-
 2. **Finish DevStack (if auto_run_stack=false - default)**
 
 refer to [Setup DevStack](./devstack/setup.md) for finishing DevStack Setup.
@@ -43,14 +41,22 @@ Validate: `source openrc admin admin && openstack service list`
 
 3. **Run notifier**
 
+run this commands to clone and run notifier service:
+
 ```bash
-cd notifier
-python -m venv env && source env/bin/activate
+git clone https://github.com/saeedfarhang/notifier-service-demo.git
+cd notifier-service-demo/notifier
+python3 -m venv env && source env/bin/activate
 pip install -r requirements.txt
-python -m cmd.notifier.main configs/config.yaml
 ```
 
 Adjust `configs/config.yaml` for RabbitMQ URL, routing keys, allowed events, and SMTP settings. Metrics default to `:9000/metrics`.
+
+then run this for start notifier service:
+
+```bash
+python -m cmd.notifier.main configs/config.yaml
+```
 
 > for more detail on service refer to [notifier service](./notifier/README.md).
 

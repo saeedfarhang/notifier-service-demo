@@ -64,7 +64,6 @@ cd /opt/stack
 
 ```bash
 git clone https://opendev.org/openstack/devstack
-
 cd devstack
 ```
 
