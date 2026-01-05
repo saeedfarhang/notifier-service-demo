@@ -50,9 +50,38 @@ async def consume(cfg: dict, email_sender):
                     continue
                 logger.info("Event allowed: %s", event_type)
                 subject = f"[OpenStack] {event_type}"
-                body = json.dumps(payload, indent=2)
-
-                email_sender.send(subject, body)
+                message = get_message_from_payload(payload)
+                email_sender.send(subject, message)
                 EVENTS_SENT.labels(event_type=event_type).inc()
 
                 logger.info("notification sent for event %s", event_type)
+
+
+def get_message_from_payload(payload):
+    message = ""
+    try:
+        event = payload.get("event_type", "unknown")
+        status = payload.get("payload", {}).get('message', None)
+        display_name = payload.get("payload", {}).get('display_name', None)
+        instance_id = payload.get("payload", {}).get('instance_id', None)
+        
+        if event == "compute.instance.create.start":
+            message = f"creating instance {display_name} started."
+        elif event == "compute.instance.create.end":
+            message = f"creating instance {display_name} finished."
+        elif event == "compute.instance.create.error":
+            message = f"creating instance {display_name} has error."
+        elif event == "compute.instance.delete.start":
+            message = f"deleting instance {display_name} started."
+        elif event == "compute.instance.delete.end":
+            message = f"deleting instance {display_name} finished."
+        elif event == "compute.instance.delete.error":
+            message = f"deleting instance {display_name} has error."
+        if status:
+            message = f"{message} status: *{status}*"
+        if instance_id:
+            message = f"{message}\ninstance id: {instance_id}"
+    except:
+        body = json.dumps(payload, indent=2)
+        message = body
+    return message
