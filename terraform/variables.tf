@@ -1,7 +1,8 @@
 variable "region" {
   type        = string
   description = "ArvanCloud region"
-  default     = "ir-thr-fr1"
+  # default     = "ir-thr-fr1"
+  default     = "ir-thr-ba1"
 }
 
 variable "ssh_key_name" {
@@ -13,7 +14,8 @@ variable "ssh_key_name" {
 variable "flavor_id" {
   description = "Arvan plan ID for DevStack VM"
   type        = string
-  default     = "g1-12-4-0"
+  # default     = "g1-12-4-0"
+  default     = "g4-16-8-0"
 }
 
 variable "disk_size" {
@@ -55,5 +57,5 @@ variable "arvan_api_key" {
 variable "security_group_ids" {
   description = "List of security group IDs to attach (use IDs, not names)"
   type        = list(string)
-  default     = ["dec3e429-1559-46eb-b735-59db84665f8f"]
+  default     = ["9524b79b-4e99-4d0f-8fb2-d642969c8186"]
 }
